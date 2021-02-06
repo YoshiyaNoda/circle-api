@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['api', 'session'])->group(function() {
-    Route::get('/hoge', function() {
-        return "hoge\n";
-    });
+    $testPath = "\App\Http\Controllers\Test";
+    Route::get('fetch/{provider}/oauth-target-url-test', $testPath.'\OAuthTestController@retTargetUrl');
+    Route::get('auth/{provider}/callback', $testPath.'\OAuthTestController@handleProviderCallback');
 });
