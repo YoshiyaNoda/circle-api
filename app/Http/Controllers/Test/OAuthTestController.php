@@ -12,14 +12,20 @@ class OAuthTestController extends Controller
         return Socialite::driver($provider)->redirect()->getTargetUrl();
     }
     public function handleProviderCallback($provider) {
-        // $providerUser = Socialite::with($provider)->user();
         $providerUser = Socialite::with($provider)->stateless()->user(); // Laravel\Socialite\Two\InvalidStateException のエラーを解決するためにはこうしないといけないらしい
 
         try {
-            $email = $providerUser->getEmail() ?? null;
-            $providerId = $providerUser->getId();
 
-            return redirect("http://localhost:8080/#".$providerUser->token);
+            $queries = [
+                'token' => $providerUser->token,
+                'status' => 'success',
+                'email' => $providerUser->getEmail() ?? '',
+                'name' => $providerUser->getName() ?? ''
+            ];
+
+            $queryString = http_build_query($queries, null, '&');
+
+            return redirect("http://localhost:8080/auth/finished?".$queryString);
         } catch(\Exception $e) {
             return redirect('/');
         }
