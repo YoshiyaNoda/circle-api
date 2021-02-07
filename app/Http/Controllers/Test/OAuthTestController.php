@@ -25,7 +25,7 @@ class OAuthTestController extends Controller
 
             $queryString = http_build_query($queries, null, '&');
 
-            return redirect("http://localhost:8080/auth/finished?".$queryString);
+            return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);
         } catch(\Exception $e) {
             return redirect('/');
         }
