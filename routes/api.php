@@ -22,3 +22,7 @@ Route::middleware(['api', 'session'])->group(function() {
     Route::get('fetch/{provider}/oauth-target-url-test', 'OAuthController@retTargetUrl');
     Route::get('auth/{provider}/callback', 'OAuthController@handleProviderCallback');
 });
+
+Route::middleware(['api'])->group(function() {
+    Route::post('fetch-article-list', 'ArticleController@fetchArticleList');
+});
