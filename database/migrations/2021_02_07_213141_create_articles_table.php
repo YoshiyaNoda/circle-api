@@ -23,6 +23,7 @@ class CreateArticlesTable extends Migration
                 ->onUpdate('cascade');
             $table->json('json')->nullable();
             $table->string('url');
+            $table->string('title');
             $table->text('raw_html')->nullable();
             $table->timestamps();
         });

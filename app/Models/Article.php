@@ -13,6 +13,7 @@ class Article extends Model
         'json',
         'user_id',
         'raw_html',
-        'url'
+        'url',
+        'title',
     ];
 }
