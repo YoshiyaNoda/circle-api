@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 
 class OAuthController extends Controller
@@ -18,7 +19,8 @@ class OAuthController extends Controller
             $queries = [
                 'token' => $providerUser->token,
                 'email' => $providerUser->getEmail() ?? '',
-                'name' => $providerUser->getName() ?? ''
+                'name' => $providerUser->getName() ?? '',
+                'provider' => $provider
             ];
 
             $queryString = http_build_query($queries, null, '&');
@@ -27,7 +29,7 @@ class OAuthController extends Controller
 
             return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);
         } catch(\Exception $e) {
-            return redirect(config('const_env.FRONT_URL')."/auth");
+            return redirect(config('const_env.FRONT_URL')."/auth/failed");
         }
     }
 }

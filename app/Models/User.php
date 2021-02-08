@@ -9,18 +9,20 @@ class User extends Model
     protected $fillable = [
         'name',
         'token',
-        'email'
+        'email',
+        'provider',
     ]; 
 
     protected $hidden = [ 'token' ]; 
 
     static public function createOrUpdateOnCallback($queries) {
         self::updateOrCreate(
-            ['email' => $queries->email],
+            ['email' => $queries["email"]],
             [
-                'email' => $queries->email,
-                'name' => $queries->name,
-                'token' => $queries->token
+                'email' => $queries["email"],
+                'name' => $queries["name"],
+                'token' => $queries["token"],
+                'provider' => $queries["provider"]
             ]
         );
     }

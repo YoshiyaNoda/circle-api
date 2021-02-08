@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['api', 'session'])->group(function() {
-    $testPath = "\App\Http\Controllers\Test";
-    Route::get('fetch/{provider}/oauth-target-url-test', $testPath.'\OAuthTestController@retTargetUrl');
-    Route::get('auth/{provider}/callback', $testPath.'\OAuthTestController@handleProviderCallback');
+    // $testPath = "\App\Http\Controllers\Test";
+    Route::get('fetch/{provider}/oauth-target-url-test', 'OAuthController@retTargetUrl');
+    Route::get('auth/{provider}/callback', 'OAuthController@handleProviderCallback');
 });
