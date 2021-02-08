@@ -13,7 +13,7 @@ class User extends Model
         'provider',
     ]; 
 
-    protected $hidden = [ 'token' ]; 
+    protected $hidden = [ 'token' ];
 
     static public function createOrUpdateOnCallback($queries) {
         self::updateOrCreate(
@@ -27,4 +27,4 @@ class User extends Model
         );
     }
 }
- 
+  
