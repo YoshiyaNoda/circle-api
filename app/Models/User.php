@@ -13,5 +13,16 @@ class User extends Model
     ]; 
 
     protected $hidden = [ 'token' ]; 
+
+    static public function createOrUpdateOnCallback($queries) {
+        self::updateOrCreate(
+            ['email' => $queries->email],
+            [
+                'email' => $queries->email,
+                'name' => $queries->name,
+                'token' => $queries->token
+            ]
+        );
+    }
 }
  

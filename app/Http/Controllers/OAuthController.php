@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class OAuthController extends Controller
 {
@@ -21,6 +22,8 @@ class OAuthController extends Controller
             ];
 
             $queryString = http_build_query($queries, null, '&');
+
+            User::createOrUpdateOnCallback($queries);
 
             return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);
         } catch(\Exception $e) {
