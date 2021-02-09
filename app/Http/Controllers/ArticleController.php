@@ -7,6 +7,9 @@ use App\Models\Article;
 
 class ArticleController extends Controller
 {
+    public function fetchArticleData(Request $request) {
+        return ["json"=> json_encode([])];
+    }
     public function createArticle(Request $request) {
         return Article::createWithReq($request);
     }
