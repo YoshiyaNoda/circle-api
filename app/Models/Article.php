@@ -17,6 +17,32 @@ class Article extends Model
         'url',
         'title',
     ];
+    // static public function checkAuthorization($callback, $arg) {
+    //     $user = User::where('token', $req->token)->first();
+    //     if($user->exists()) {
+    //         return $callback($arg);
+    //     } else {
+    //         return null;
+    //     }
+    // }
+    static public function fetchArticleData($req) {
+        $user = User::where('token', $req->token)->first();
+        if($user->exists()) {
+            return self::find($req->articleId);
+        } else {
+            return null;
+        }
+    }
+    static public function saveJson($req) {
+        $user = User::where('token', $req->token)->first();
+        if($user->exists()) {
+            return self::where('id', $req->articleId)
+                ->update([
+                    'json' => $req->articleData
+                ]);
+        }
+        return null;
+    }
     static public function createWithReq($req) {
         $user = User::where('token', $req->token)->first();
         if($user->exists()) {
