@@ -17,7 +17,6 @@ class ArticleController extends Controller
         return Article::createWithReq($request);
     }
     public function fetchArticleList(Request $request) {
-        
         return Article::fetchArticleList($request->token);
     }
 }
