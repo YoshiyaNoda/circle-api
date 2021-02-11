@@ -14,7 +14,7 @@ class ArticleController extends Controller
         return Article::fetchRawHTML($request);
     }
     public function saveArticleData(Request $request) {
-        return Article::saveJson($request);
+        return Article::saveArticleData($request);
     }
     public function fetchArticleData(Request $request) {
         return Article::fetchArticleData($request);

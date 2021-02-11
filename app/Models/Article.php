@@ -49,12 +49,14 @@ class Article extends Model
             return null;
         }
     }
-    static public function saveJson($req) {
+    static public function saveArticleData($req) {
         $user = User::where('token', $req->token)->first();
         if($user->exists()) {
             return self::where('id', $req->articleId)
                 ->update([
-                    'json' => $req->articleData
+                    'json' => $req->articleData,
+                    'url' => $req->url,
+                    'title' => $req->title
                 ]);
         }
         return null;
