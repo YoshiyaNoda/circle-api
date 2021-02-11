@@ -30,6 +30,17 @@ class Article extends Model
             ->where('url', $req->articleURL)
             ->value('raw_html');
     }
+    static public function saveRawHTML($req) {
+        $user = User::where('token', $req->token)->first();
+        if($user->exists()) {
+            return self::where('id', $req->articleId)
+                ->update([
+                    'raw_html' => $req->rawHTML
+                ]);
+        } else {
+            return null;
+        }
+    }
     static public function fetchArticleData($req) {
         $user = User::where('token', $req->token)->first();
         if($user->exists()) {

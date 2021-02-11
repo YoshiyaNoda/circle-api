@@ -7,6 +7,9 @@ use App\Models\Article;
 
 class ArticleController extends Controller
 {
+    public function saveRawHTML(Request $request) {
+        return Article::saveRawHTML($request);
+    }
     public function fetchRawHTML(Request $request) {
         return Article::fetchRawHTML($request);
     }
