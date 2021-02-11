@@ -25,6 +25,11 @@ class Article extends Model
     //         return null;
     //     }
     // }
+    static public function fetchRawHTML($req) {
+        return Article::where('user_id', $req->userId)
+            ->where('url', $req->articleURL)
+            ->value('raw_html');
+    }
     static public function fetchArticleData($req) {
         $user = User::where('token', $req->token)->first();
         if($user->exists()) {

@@ -27,4 +27,5 @@ Route::middleware(['api'])->group(function() {
     Route::post('create-article', 'ArticleController@createArticle');
     Route::post('fetch-article-data', 'ArticleController@fetchArticleData');
     Route::post('save-article-data', 'ArticleController@saveArticleData');
+    Route::post('fetch-raw-HTML', 'ArticleController@fetchRawHTML');
 });
