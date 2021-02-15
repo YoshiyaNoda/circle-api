@@ -11,6 +11,10 @@ class ImageController extends Controller
     static public function fetchUserFromToken($req) {
         return User::where('token', $req->token)->first();
     }
+    public function retImagesAll($request) {
+        $user = self::fetchUserFromToken($request);
+        return Image::retImagesAll($user);
+    }
     public function uploadImage(Request $request) {
         $user = self::fetchUserFromToken($request);
         if($user) {
