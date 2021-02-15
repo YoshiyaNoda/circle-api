@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class User extends Model
 {
@@ -26,5 +27,10 @@ class User extends Model
             ]
         );
     }
+
+    static public function getUser($token) {
+        return DB::table('users')->where('token', $token)->value('name');
+    }
+
 }
   
