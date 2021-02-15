@@ -22,7 +22,7 @@ class Image extends Model
                 ->putFile('user'.(string)$user->id, $req->image);
             $readPath = '';
             if(config('const_env.STORAGE_DISK') === 'public') {
-                $readPath = "http://localhost:8000/storage/user".$path;
+                $readPath = "http://localhost:8000/storage/".$path;
             } else {
                 $readPath = "s3".$path;
             }

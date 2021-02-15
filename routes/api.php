@@ -31,4 +31,5 @@ Route::middleware(['api'])->group(function() {
     Route::post('save-raw-HTMl', 'ArticleController@saveRawHTML');
 
     Route::post('upload-image', 'ImageController@uploadImage');
+    Route::post('fetch-image-list', 'ImageController@retImagesAll');
 });
