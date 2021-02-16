@@ -38,7 +38,7 @@ class OAuthController extends Controller
 
 
 
-            return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);
+            return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);//?がクエリパラメータを渡すよ
         } catch(\Exception $e) {
             return redirect(config('const_env.FRONT_URL')."/auth/failed");
         }

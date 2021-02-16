@@ -30,5 +30,5 @@ Route::middleware(['api'])->group(function() {
     Route::post('save-article-data', 'ArticleController@saveArticleData');
     Route::post('fetch-raw-HTML', 'ArticleController@fetchRawHTML');
     Route::post('save-raw-HTMl', 'ArticleController@saveRawHTML');
-    Route::get('get-user-name','UserController@getUserName');
+    //Route::get('get-user-name','UserController@getUserName');
 });

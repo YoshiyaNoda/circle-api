@@ -29,7 +29,8 @@ class User extends Model
     }
 
     static public function getUser($token) {
-        return DB::table('users')->where('token', $token)->value('name');
+        $queries=DB::table('users')->where('token', $token)->get();
+        return $queries;
     }
 
 }
