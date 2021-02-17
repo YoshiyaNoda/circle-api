@@ -25,6 +25,22 @@ class Article extends Model
     //         return null;
     //     }
     // }
+    static public function fetchRawHTML($req) {
+        return Article::where('user_id', $req->userId)
+            ->where('url', $req->articleURL)
+            ->value('raw_html');
+    }
+    static public function saveRawHTML($req) {
+        $user = User::where('token', $req->token)->first();
+        if($user->exists()) {
+            return self::where('id', $req->articleId)
+                ->update([
+                    'raw_html' => $req->rawHTML
+                ]);
+        } else {
+            return null;
+        }
+    }
     static public function fetchArticleData($req) {
         $user = User::where('token', $req->token)->first();
         if($user->exists()) {
@@ -33,12 +49,14 @@ class Article extends Model
             return null;
         }
     }
-    static public function saveJson($req) {
+    static public function saveArticleData($req) {
         $user = User::where('token', $req->token)->first();
         if($user->exists()) {
             return self::where('id', $req->articleId)
                 ->update([
-                    'json' => $req->articleData
+                    'json' => $req->articleData,
+                    'url' => $req->url,
+                    'title' => $req->title
                 ]);
         }
         return null;
