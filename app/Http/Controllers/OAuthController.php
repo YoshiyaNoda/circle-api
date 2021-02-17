@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 
+
+
 class OAuthController extends Controller
 {
+    
     public function retTargetUrl($provider) {
         return Socialite::driver($provider)->redirect()->getTargetUrl();
     }
-    public function handleProviderCallback($provider) {
+    public function handleProviderCallback($provider ,Request $request) {
         $providerUser = Socialite::with($provider)->stateless()->user(); // Laravel\Socialite\Two\InvalidStateException のエラーを解決するためにはこうしないといけないらしい
 
         try {
@@ -24,10 +27,16 @@ class OAuthController extends Controller
             ];
 
             $queryString = http_build_query($queries, null, '&');
-
+            
             User::createOrUpdateOnCallback($queries);
+           
+           
+            $request->session()->put('user_token',$providerUser->token);
+            
 
-            return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);
+
+
+            return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);//?がクエリパラメータを渡すよ
         } catch(\Exception $e) {
             return redirect(config('const_env.FRONT_URL')."/auth/failed");
         }

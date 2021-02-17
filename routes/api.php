@@ -17,9 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['api', 'session'])->group(function() {
+Route::middleware(['api', 'session','cors'])->group(function() {
     Route::get('fetch/{provider}/oauth-target-url-test', 'OAuthController@retTargetUrl');
     Route::get('auth/{provider}/callback', 'OAuthController@handleProviderCallback');
+    Route::get('session-token','SessionTokenController@SessionToken');
 });
 
 Route::middleware(['api'])->group(function() {
