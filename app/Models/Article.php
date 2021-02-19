@@ -17,6 +17,7 @@ class Article extends Model
         'url',
         'title',
     ];
+    protected static $user_id_crypt_key = "mange";
     // static public function checkAuthorization($callback, $arg) {
     //     $user = User::where('token', $req->token)->first();
     //     if($user->exists()) {
@@ -26,7 +27,9 @@ class Article extends Model
     //     }
     // }
     static public function fetchRawHTML($req) {
-        return Article::where('user_id', $req->userId)
+        $encrypted_user_id = $req->encrypted_user_id;
+        $userId = openssl_decrypt(hex2bin($encrypted_user_id), 'AES-128-ECB', self::$user_id_crypt_key);
+        return Article::where('user_id', $userId)
             ->where('url', $req->articleURL)
             ->value('raw_html');
     }
@@ -43,8 +46,11 @@ class Article extends Model
     }
     static public function fetchArticleData($req) {
         $user = User::where('token', $req->token)->first();
+        // sessionにuserIdが入っているので、それをopenssl+hex2bin+bin2hexで暗号化して返す
         if($user->exists()) {
-            return self::find($req->articleId);
+            $article = self::find($req->articleId);
+            $article->encrypted_user_id = bin2hex(openssl_encrypt($article->user_id, 'AES-128-ECB', self::$user_id_crypt_key));
+            return $article;
         } else {
             return null;
         }
