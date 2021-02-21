@@ -10,8 +10,9 @@ class OAuthController extends Controller
 {
     public function retTargetUrl($provider) {
         return Socialite::driver($provider)->redirect()->getTargetUrl();
+        
     }
-    public function handleProviderCallback($provider) {
+    public function handleProviderCallback($provider,Request $request) {
         $providerUser = Socialite::with($provider)->stateless()->user(); // Laravel\Socialite\Two\InvalidStateException のエラーを解決するためにはこうしないといけないらしい
 
         try {
@@ -22,10 +23,17 @@ class OAuthController extends Controller
                 'name' => $providerUser->getName() ?? '',
                 'provider' => $provider
             ];
-
-            $queryString = http_build_query($queries, null, '&');
-
             User::createOrUpdateOnCallback($queries);
+
+            $responsequeries = [
+                'login' => true,//フロントにトークンは渡さないかわりに、ログインできたという情報を送る
+                'email' => $providerUser->getEmail() ?? '',
+                'name' => $providerUser->getName() ?? '',
+            ];
+
+            $queryString = http_build_query($responsequeries, null, '&');
+
+            $request->session()->put('user_token',$providerUser->token);
 
             return redirect(config('const_env.FRONT_URL')."/auth/finished?".$queryString);
         } catch(\Exception $e) {

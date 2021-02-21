@@ -22,14 +22,16 @@ Route::middleware(['api', 'session'])->group(function() {
     Route::get('auth/{provider}/callback', 'OAuthController@handleProviderCallback');
 });
 
-Route::middleware(['api'])->group(function() {
-    Route::post('fetch-article-list', 'ArticleController@fetchArticleList');
+Route::middleware(['api','session','sessionauth'])->group(function() {
+    Route::any('fetch-article-list', 'ArticleController@fetchArticleList');
     Route::post('create-article', 'ArticleController@createArticle');
     Route::post('fetch-article-data', 'ArticleController@fetchArticleData');
-    Route::post('save-article-data', 'ArticleController@saveArticleData');
+    Route::any('save-article-data', 'ArticleController@saveArticleData');
     Route::post('fetch-raw-HTML', 'ArticleController@fetchRawHTML');
     Route::post('save-raw-HTMl', 'ArticleController@saveRawHTML');
 
     Route::post('upload-image', 'ImageController@uploadImage');
     Route::post('fetch-image-list', 'ImageController@retImagesAll');
+    
+    Route::get('get-user', 'GetUserController@getUser');
 });

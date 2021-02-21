@@ -31,48 +31,30 @@ class Article extends Model
             ->value('raw_html');
     }
     static public function saveRawHTML($req) {
-        $user = User::where('token', $req->token)->first();
-        if($user->exists()) {
-            return self::where('id', $req->articleId)
-                ->update([
-                    'raw_html' => $req->rawHTML
-                ]);
-        } else {
-            return null;
-        }
+        return self::where('id', $req->articleId)
+            ->update([
+                'raw_html' => $req->rawHTML
+            ]);
     }
     static public function fetchArticleData($req) {
-        $user = User::where('token', $req->token)->first();
-        if($user->exists()) {
-            return self::find($req->articleId);
-        } else {
-            return null;
-        }
-    }
+        return self::find($req->articleId);
+    } 
+
     static public function saveArticleData($req) {
-        $user = User::where('token', $req->token)->first();
-        if($user->exists()) {
-            return self::where('id', $req->articleId)
-                ->update([
-                    'json' => $req->articleData,
-                    'url' => $req->url,
-                    'title' => $req->title
-                ]);
-        }
-        return null;
+        return self::where('id', $req->articleId)
+            ->update([
+                'json' => $req->articleData,
+                'url' => $req->url,
+                'title' => $req->title
+            ]);
     }
     static public function createWithReq($req) {
-        $user = User::where('token', $req->token)->first();
-        if($user->exists()) {
-            $userId = $user->id;
-            return self::create([
-                'user_id' => $userId,
-                'title' => $req->title,
-                'url' => $req->url,
-            ])->id;
-        } else {
-            return null;
-        }
+        $userId = $user->id;
+        return self::create([
+            'user_id' => $userId,
+            'title' => $req->title,
+            'url' => $req->url,
+        ])->id;
     }
     static public function fetchArticleList($token) {
         return \DB::table('users')
