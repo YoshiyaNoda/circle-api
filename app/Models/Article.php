@@ -34,51 +34,32 @@ class Article extends Model
             ->value('raw_html');
     }
     static public function saveRawHTML($req) {
-        $user = User::where('token', $req->token)->first();
-        if($user->exists()) {
-            return self::where('id', $req->articleId)
-                ->update([
-                    'raw_html' => $req->rawHTML
-                ]);
-        } else {
-            return null;
-        }
+        return self::where('id', $req->articleId)
+            ->update([
+                'raw_html' => $req->rawHTML
+            ]);
     }
     static public function fetchArticleData($req) {
-        $user = User::where('token', $req->token)->first();
-        // sessionにuserIdが入っているので、それをopenssl+hex2bin+bin2hexで暗号化して返す
-        if($user->exists()) {
-            $article = self::find($req->articleId);
-            $article->encrypted_user_id = bin2hex(openssl_encrypt($article->user_id, 'AES-128-ECB', self::$user_id_crypt_key));
-            return $article;
-        } else {
-            return null;
-        }
-    }
+      $article = self::find($req->articleId);
+      $article->encrypted_user_id = bin2hex(openssl_encrypt($article->user_id, 'AES-128-ECB', self::$user_id_crypt_key));
+      $article->user_id = 0;
+      return $article;
+    } 
     static public function saveArticleData($req) {
-        $user = User::where('token', $req->token)->first();
-        if($user->exists()) {
-            return self::where('id', $req->articleId)
-                ->update([
-                    'json' => $req->articleData,
-                    'url' => $req->url,
-                    'title' => $req->title
-                ]);
-        }
-        return null;
+        return self::where('id', $req->articleId)
+            ->update([
+                'json' => $req->articleData,
+                'url' => $req->url,
+                'title' => $req->title
+            ]);
     }
     static public function createWithReq($req) {
-        $user = User::where('token', $req->token)->first();
-        if($user->exists()) {
-            $userId = $user->id;
-            return self::create([
-                'user_id' => $userId,
-                'title' => $req->title,
-                'url' => $req->url,
-            ])->id;
-        } else {
-            return null;
-        }
+        $userId = $user->id;
+        return self::create([
+            'user_id' => $userId,
+            'title' => $req->title,
+            'url' => $req->url,
+        ])->id;
     }
     static public function fetchArticleList($token) {
         return \DB::table('users')
